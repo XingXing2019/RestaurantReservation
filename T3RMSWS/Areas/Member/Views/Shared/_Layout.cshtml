@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Member</title>
+    <link href="~/css/cerulean/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/calendar_7days/style.css" rel="stylesheet" />
+    <link href="~/css/menu/menuPad.css" rel="stylesheet" />
+    <style>
+        .editBackground {
+            background-image: url(../../../../img/memberEdit.jpg);
+            padding: 100px 0;
+        }
+        .editTable {
+            background-color: #00000090;
+            margin: 0 auto;
+            border-radius: 5px;
+            padding: 10px;
+            border: white 5px solid;
+        }
+        .reservationTable {
+            background-image: url("../img/dark.jpg");
+            background-size: cover;
+        }
+        .detailBackground {
+            background-image: url(../../../../img/memberDetails.jpg);
+            background-size: cover;
+            padding: 100px 50px;
+        }
+        .detailTable {
+            background-color: #00000090;
+            border-radius: 5px;
+            padding: 10px;
+            border: white 5px solid;
+        }
+        .deleteBackground {
+            background-image: url(../../../../img/memberDelete.jpg);
+            background-size: cover;
+            padding: 100px 50px;
+        }
+        .memberBg {
+            background-image: url(../../../../img/memberBg.jpg);
+            background-size: cover;
+        }
+        .successBackground {
+            background-image: url(../../../../img/memberSuccess.jpg);
+            background-size: cover;
+            padding: 200px 50px 350px;
+            font-size: 20px;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
+            <div class="container ">
+                <a asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" height="50" class="mr-2" /></a>
+                <a class="navbar-brand" asp-area="Member" asp-controller="Home" asp-action="Index">T3RMSWS</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Member" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Member" asp-controller="Reservation" asp-action="Index">My Reservations</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - T3RMSWS - <a asp-area="Member" asp-controller="Home" asp-action="Index">Home</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/calendar_7days/calendar7.js"></script>
+
+    <script>
+        jQuery('.calendar-7').Calendar7({
+            allowTimeStart: '07:00',
+            allowTimeEnd: '22:00'
+        });
+    </script>
+
+    <script>
+        (function () {
+
+            // Append a close trigger for each block
+            $('.menu .content').append('<span class="close">x</span>');
+            // Show window
+            function showContent(elem) {
+                hideContent();
+                elem.find('.content').addClass('expanded');
+                elem.addClass('cover');
+            }
+            // Reset all
+            function hideContent() {
+                $('.menu .content').removeClass('expanded');
+                $('.menu li').removeClass('cover');
+            }
+
+            // When a li is clicked, show its content window and position it above all
+            $('.menu li').click(function () {
+                showContent($(this));
+            });
+            // When tabbing, show its content window using ENTER key
+            $('.menu li').keypress(function (e) {
+                if (e.keyCode == 13) {
+                    showContent($(this));
+                }
+            });
+
+            // When right upper close element is clicked  - reset all
+            $('.menu .close').click(function (e) {
+                e.stopPropagation();
+                hideContent();
+            });
+            // Also, when ESC key is pressed - reset all
+            $(document).keyup(function (e) {
+                if (e.keyCode == 27) {
+                    hideContent();
+                }
+            });
+
+        })();
+    </script>
+    <script>
+        (function () {
+            var bsa = document.createElement('script');
+            bsa.async = true;
+            bsa.src = 'http://www.red-team-design.com/js/adpacks-demo.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bsa);
+        })();
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

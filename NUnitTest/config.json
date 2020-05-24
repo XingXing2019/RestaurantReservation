@@ -1,0 +1,3 @@
+{
+   "DefaultConnection": "server=(localdb)\\MSSQLLocalDB;database=T3RMSWS;Trusted_Connection=true"
+}

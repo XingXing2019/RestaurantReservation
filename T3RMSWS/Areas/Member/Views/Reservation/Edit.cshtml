@@ -1,0 +1,69 @@
+﻿
+@model T3RMSWS.Data.ReservationRequest
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit My Booking</h2>
+<hr />
+<div class="row editBackground">
+    <div class="col-lg-4 editTable text-light">
+        <p class="text-light">@ViewBag.AvailableTimeMsg</p>
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-light"></div>
+            <div class="form-group">
+                <input hidden="" asp-for="Email" class="form-control" value="m@e.com" />
+                <input hidden="" asp-for="GuestName" class="form-control" value="default" />
+                <input hidden="" asp-for="Mobile" class="form-control" value="0400000000" />
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDateTime" class="control-label"></label>
+                <input class="calendar-7 form-control input" name="startDateTime" value="@Model.StartDateTime" />
+                <span asp-validation-for="StartDateTime" class="text-light"></span>
+            </div>
+            <label asp-for="Duration" class="control-label"></label>
+            <select asp-for="Duration" class="form-control selector" asp-items="Html.GetEnumSelectList<DurationLength>()">
+                <option value="">Please select duration</option>
+            </select>
+            <span asp-validation-for="Duration" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="NumberOfGuest" class="control-label"></label>
+                <input asp-for="NumberOfGuest" class="form-control" value="@Model.NumberOfGuest" />
+                <span asp-validation-for="NumberOfGuest" class="text-light"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Requirement" class="control-label"></label>
+                <textarea asp-for="Requirement" class="form-control rounded"></textarea>
+                <span asp-validation-for="Requirement" class="text-light"></span>
+            </div>
+            <div class="form-group text-right">
+                <input type="submit" value="Edit My Reservation" class="btn btn-primary" />
+            </div>
+            <div class="text-right">
+                <a class="text-light" asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center mt-5">
+    <h4 class="text-dark">SPEAK TO SOMEONE IN PERSON</h4>
+    <p>If you would like to make a larger booking or have any question, please get in touch.</p>
+</div>
+<div class="text-center row">
+    <div class="col-md-6 mt-5">
+        <h5 class="text-dark">CONTACT US</h5>
+        <p>Please call the team on</p>
+        <b>P: <a href="tel:02 9752 5428">02 9752 5428</a><br /></b>
+    </div>
+    <div class="col-md-6 mt-5">
+        <h5 class="text-dark">FIND US</h5>
+        <p>Rhodes Shopping Center</p>
+        <p>MM4/1 Rider Blvde, Rhodes NSW 2138</p>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,93 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>%24/T3 Reservation System/T3RMSSolution/T3RMSWS</SccProjectName>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccAuxPath>https://dev.azure.com/tetyanayarish</SccAuxPath>
+    <SccLocalPath>.</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-T3RMSWS-AAAF3A1D-8915-48AF-8BE4-1BD9ED5415E8</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Management\Data\**" />
+    <Compile Remove="Areas\Management\Models\**" />
+    <Compile Remove="Areas\Member\Data\**" />
+    <Compile Remove="Areas\Member\Models\**" />
+    <Compile Remove="wwwroot\css\custom_table\**" />
+    <Compile Remove="wwwroot\js\custom_table\**" />
+    <Content Remove="Areas\Management\Data\**" />
+    <Content Remove="Areas\Management\Models\**" />
+    <Content Remove="Areas\Member\Data\**" />
+    <Content Remove="Areas\Member\Models\**" />
+    <Content Remove="wwwroot\css\custom_table\**" />
+    <Content Remove="wwwroot\js\custom_table\**" />
+    <EmbeddedResource Remove="Areas\Management\Data\**" />
+    <EmbeddedResource Remove="Areas\Management\Models\**" />
+    <EmbeddedResource Remove="Areas\Member\Data\**" />
+    <EmbeddedResource Remove="Areas\Member\Models\**" />
+    <EmbeddedResource Remove="wwwroot\css\custom_table\**" />
+    <EmbeddedResource Remove="wwwroot\js\custom_table\**" />
+    <None Remove="Areas\Management\Data\**" />
+    <None Remove="Areas\Management\Models\**" />
+    <None Remove="Areas\Member\Data\**" />
+    <None Remove="Areas\Member\Models\**" />
+    <None Remove="wwwroot\css\custom_table\**" />
+    <None Remove="wwwroot\js\custom_table\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200306090804_AddRestaurantAndPerson.cs" />
+    <Compile Remove="Data\Migrations\20200306090804_AddRestaurantAndPerson.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200315094716_AddReservationDate.cs" />
+    <Compile Remove="Data\Migrations\20200315094716_AddReservationDate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200315094807_AddReservationDate.cs" />
+    <Compile Remove="Data\Migrations\20200315094807_AddReservationDate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200315095517_AddReservationDateId.cs" />
+    <Compile Remove="Data\Migrations\20200315095517_AddReservationDateId.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200424111322_AddSeedData.cs" />
+    <Compile Remove="Data\Migrations\20200424111322_AddSeedData.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200508102806_AddTables.cs" />
+    <Compile Remove="Data\Migrations\20200508102806_AddTables.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200508111753_AddTableRelation.cs" />
+    <Compile Remove="Data\Migrations\20200508111753_AddTableRelation.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200508112202_AddTableName.cs" />
+    <Compile Remove="Data\Migrations\20200508112202_AddTableName.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200508113207_AddSeedDate.cs" />
+    <Compile Remove="Data\Migrations\20200508113207_AddSeedDate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200508113420_AddSeedDates.cs" />
+    <Compile Remove="Data\Migrations\20200508113420_AddSeedDates.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200509051043_AddTableToReservation.cs" />
+    <Compile Remove="Data\Migrations\20200509051043_AddTableToReservation.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200509051526_AddTableReservationRelationship.cs" />
+    <Compile Remove="Data\Migrations\20200509051526_AddTableReservationRelationship.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200509051754_AddTableReservationRelation.cs" />
+    <Compile Remove="Data\Migrations\20200509051754_AddTableReservationRelation.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200509052133_AddTableReservationRelation.cs" />
+    <Compile Remove="Data\Migrations\20200509052133_AddTableReservationRelation.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200509053057_ChangeTableId.cs" />
+    <Compile Remove="Data\Migrations\20200509053057_ChangeTableId.Designer.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="NLog" Version="4.7.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\css\cerulean\_bootswatch.scss" />
+    <None Include="wwwroot\css\cerulean\_variables.scss" />
+    <None Include="wwwroot\img\managerEdit.jpg" />
+  </ItemGroup>
+
+</Project>

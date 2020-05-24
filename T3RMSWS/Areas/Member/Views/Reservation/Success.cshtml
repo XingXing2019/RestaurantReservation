@@ -1,0 +1,21 @@
+﻿@model T3RMSWS.Data.ReservationRequest
+@{
+    ViewData["Title"] = "Success";
+}
+
+<div class="mt-4 successBackground">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="text-dark">RESERVATION SUCCESS!</h1>
+            <p class="text-dark pt-5">Your reservation has been successful</p>
+            <p class="text-dark">Thank you for your booking with Rhodes Phoenix</p>
+            <p class="text-dark">Your reference number is @Model.ReferenceNo</p>
+            <p class="text-dark">Confirmation email has been sent to @Model.Email</p>
+            <p class="text-dark">Looking forward to see you on @Model.StartDateTime.ToString("dd-MM-yyyy")</p>
+            <div class="text-light pt-3">
+                <a class="btn btn-dark text-light" asp-controller="Home" asp-action="Index">Back to Home Page</a>
+            </div>
+        </div>
+        <div class="col-lg-4"></div>
+    </div>
+</div>

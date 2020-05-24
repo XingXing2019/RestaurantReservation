@@ -1,0 +1,64 @@
+﻿@using T3RMSWS.Data
+@model ReservationRequest
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Reservations</h1>
+<div class="mt-4">
+    <p class="text-justify">
+        Online reservations need to be made at least 48 hours in advance.For enquiries in regards to your next private function at our restaurant venue simply call us on 02 9752 5428.
+    </p>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <img class="img-thumbnail d-block w-100" src="~/img/memberReservation.jpg" alt="Alternate Text" />
+        <h5 class="text-danger mt-2">Opening Hours</h5>
+        <p>Breakfast<br>7 days a week from 7.00am - 11.00am</p>
+        <p>Lunch<br>7 days a week from 11.00am - 4.00pm</p>
+        <p>Dinner<br>7 days a week from 4.00pm - 11.00pm</p>
+    </div>
+    <div class="col-md-4">
+        <h4>BOOK A TABLE</h4>
+        <p class="text-danger">@ViewBag.AvailableTimeMsg</p>
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input hidden="" asp-for="Email" class="form-control" value="m@e.com" />
+                <input hidden="" asp-for="GuestName" class="form-control" value="default" />
+                <input hidden="" asp-for="Mobile" class="form-control" value="0400000000" />
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDateTime" class="control-label"></label>
+                <input class="calendar-7 form-control input" name="startDateTime" />
+                <span asp-validation-for="StartDateTime" class="text-danger"></span>
+            </div>
+            <label asp-for="Duration" class="control-label"></label>
+            <select asp-for="Duration" class="form-control selector" asp-items="Html.GetEnumSelectList<DurationLength>()">
+                <option value="">Please select duration</option>
+            </select>
+            <span asp-validation-for="Duration" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="NumberOfGuest" class="control-label"></label>
+                <input asp-for="NumberOfGuest" class="form-control" />
+                <span asp-validation-for="NumberOfGuest" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Requirement" class="control-label"></label>
+                <textarea asp-for="Requirement" class="form-control rounded"></textarea>
+                <span asp-validation-for="Requirement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="CONFIRM" class="btn btn-primary" />
+            </div>
+        </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+
+

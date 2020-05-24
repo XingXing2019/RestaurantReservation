@@ -1,0 +1,55 @@
+﻿@model ReservationIndexViewModel
+
+@{
+
+    ViewData["Title"] = "Index";
+}
+
+<h2>My Reservation History</h2>
+<div class="reservationTable pl-5 pr-5 pt-3 pb-3 mt-4">
+    <table class="table table-striped table-hover mt-5 text-light">
+        <thead class="thead-dark">
+            <tr>
+                <th>Start</th>
+                <th>Book For</th>
+                <th>Guests</th>
+                <th>Table</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reservations)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SittingType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfGuest)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TableType)
+                </td>
+                <td>
+                    <a class="text-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a class="text-light" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="text-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <p>
+        <a class="btn btn-info" asp-action="Create">CREATE NEW</a>
+    </p>
+</div>
+
+
+
+@section Scripts
+{
+    <script src="~/js/Sticky-Table/jquery.stickytable.js"></script>
+}

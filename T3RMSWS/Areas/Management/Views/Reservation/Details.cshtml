@@ -1,0 +1,93 @@
+﻿@model T3RMSWS.Data.ReservationRequest
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>My Reservation Details</h2>
+<hr />
+<div class="mt-4 detailBackground">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="text-light">
+                <a class="text-light" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                <a class="text-light" asp-action="Index">Back to List</a>
+            </div>
+            <dl class="row detailTable text-light mt-3">
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.GuestName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.GuestName)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ReferenceNo)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.ReferenceNo)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Mobile)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Mobile)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.TimeStamp)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.TimeStamp)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.NumberOfGuest)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.NumberOfGuest)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.StartDateTime)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.StartDateTime)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.EndDateTime)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.EndDateTime)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Requirement)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Requirement)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ReservationSource)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.ReservationSource)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.SittingType)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.SittingType)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.TableType)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.TableType)
+                </dd>
+            </dl>
+            <div class="col-lg-6"></div>
+        </div>
+    </div>
+</div>
