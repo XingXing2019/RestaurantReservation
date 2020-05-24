@@ -20,13 +20,14 @@ namespace UnitTest.UITest
         {
             string email = "test@e.com";
             string mobile = "0425123214";
-            string firstName = "Timothy";
-            string lastName = "Xing";
-            string password = "Member@123";
-            string passwordConfirm = "Member@123";
+            string guestName = "Timothy Xing";
+            DateTime startDateTime = new DateTime(2020, 05, 25, 08, 00, 00);
+            DurationLength duration = DurationLength.OneHour;
+            int numberOfGuest = 12;
+            string requirement = "Close to window";
             try
             {
-                //testVector = GenerateTestVector(email, mobile, firstName, lastName, password, passwordConfirm);
+                testVector = GenerateTestVector(email, mobile, guestName, startDateTime, duration, numberOfGuest, requirement);
                 driver = new ChromeDriver();
                 registerURL = "https://localhost:44309/Identity/Account/Register";
                 driver.Navigate().GoToUrl(registerURL);
@@ -64,12 +65,29 @@ namespace UnitTest.UITest
             public string Requirement { get; set; }
         }
 
-        private static TestVector GenerateTestVector(string email, string mobile, string guestName)
-            => new TestVector
+        private static TestVector GenerateTestVector(
+            string email,
+            string mobile,
+            string guestName,
+            DateTime startDateTime, 
+            DurationLength duration, 
+            int numberOfGuest, 
+            string requirement
+            ) => new TestVector
             {
                 Email = email,
                 Mobile = mobile,
                 GuestName = guestName,
+                StartDateTime = startDateTime,
+                Duration = duration,
+                NumberOfGuest = numberOfGuest,
+                Requirement = requirement
             };
+
+        [Test]
+        public void WalkInReservationTest_Success()
+        {
+
+        }
     }
 }
