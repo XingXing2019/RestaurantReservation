@@ -84,21 +84,21 @@ namespace UITesting
             try
             {
                 //Invalid email address
-                var invalidEmial = "m@@e.com";
-                driver.FindElement(By.Id("email")).SendKeys(invalidEmial);
+                var invalidEmail = "m@@e.com";
+                driver.FindElement(By.Id("registerEmail")).SendKeys(invalidEmail);
 
-                driver.FindElement(By.Id("mobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("firstName")).SendKeys(testVector.FirstName);
-                driver.FindElement(By.Id("lastName")).SendKeys(testVector.LastName);
-                driver.FindElement(By.Id("password")).SendKeys(testVector.Password);
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(testVector.PasswordConfirm);
+                driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Mobile);
+                driver.FindElement(By.Id("registerFirstName")).SendKeys(testVector.FirstName);
+                driver.FindElement(By.Id("registerLastName")).SendKeys(testVector.LastName);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(testVector.Password);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(testVector.PasswordConfirm);
                 driver.FindElement(By.Id("register")).Click();
 
-                var actualErrorMsg = driver.FindElement(By.Id("emailErrorMsg")).Text;
+                var actualErrorMsg = driver.FindElement(By.Id("registerEmailErrorMsg")).Text;
                 var expectedErrorMsg = "The Email field is not a valid e-mail address.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("emailErrorMsg")).Text;
+                actualErrorMsg = driver.FindElement(By.Id("registerEmailErrorMsg")).Text;
                 expectedErrorMsg = "The Email field is not a valid e-mail address.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
@@ -114,21 +114,21 @@ namespace UITesting
         {
             try
             {
-                driver.FindElement(By.Id("email")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
 
                 //Invalid mobile
-                driver.FindElement(By.Id("mobile")).SendKeys("");
-                driver.FindElement(By.Id("firstName")).SendKeys(testVector.FirstName);
-                driver.FindElement(By.Id("lastName")).SendKeys(testVector.LastName);
-                driver.FindElement(By.Id("password")).SendKeys(testVector.Password);
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(testVector.PasswordConfirm);
+                driver.FindElement(By.Id("registerMobile")).SendKeys("");
+                driver.FindElement(By.Id("registerFirstName")).SendKeys(testVector.FirstName);
+                driver.FindElement(By.Id("registerLastName")).SendKeys(testVector.LastName);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(testVector.Password);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(testVector.PasswordConfirm);
                 driver.FindElement(By.Id("register")).Click();
 
-                var actualErrorMsg = driver.FindElement(By.Id("mobileErrorMsg")).Text;
+                var actualErrorMsg = driver.FindElement(By.Id("registerMobileErrorMsg")).Text;
                 var expectedErrorMsg = "The Mobile field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("errorMsg")).Text;
+                actualErrorMsg = driver.FindElement(By.Id("registerErrorMsg")).Text;
                 expectedErrorMsg = "The Mobile field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
@@ -144,26 +144,26 @@ namespace UITesting
         {
             try
             {
-                driver.FindElement(By.Id("email")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("mobile")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Email);
 
                 //Invalid mobile
-                driver.FindElement(By.Id("firstName")).SendKeys("");
-                driver.FindElement(By.Id("lastName")).SendKeys("");
+                driver.FindElement(By.Id("registerFirstName")).SendKeys("");
+                driver.FindElement(By.Id("registerLastName")).SendKeys("");
 
-                driver.FindElement(By.Id("password")).SendKeys(testVector.Password);
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(testVector.PasswordConfirm);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(testVector.Password);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(testVector.PasswordConfirm);
                 driver.FindElement(By.Id("register")).Click();
 
-                var actualErrorMsg = driver.FindElement(By.Id("firstNameErrorMsg")).Text;
+                var actualErrorMsg = driver.FindElement(By.Id("registerFirstNameErrorMsg")).Text;
                 var expectedErrorMsg = "The First Name field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("lastNameErrorMsg")).Text;
+                actualErrorMsg = driver.FindElement(By.Id("registerLastNameErrorMsg")).Text;
                 expectedErrorMsg = "The Last Name field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("errorMsg")).Text;
+                actualErrorMsg = driver.FindElement(By.Id("registerErrorMsg")).Text;
                 expectedErrorMsg = "The First Name field is required.\r\nThe Last Name field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
@@ -181,17 +181,17 @@ namespace UITesting
             {
                 string inconsistentPassword = "Member@1234";
 
-                driver.FindElement(By.Id("email")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("mobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("firstName")).SendKeys(testVector.FirstName);
-                driver.FindElement(By.Id("lastName")).SendKeys(testVector.LastName);
-                driver.FindElement(By.Id("password")).SendKeys(testVector.Password);
+                driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Mobile);
+                driver.FindElement(By.Id("registerFirstName")).SendKeys(testVector.FirstName);
+                driver.FindElement(By.Id("registerLastName")).SendKeys(testVector.LastName);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(testVector.Password);
 
                 //Inconsistent password
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(inconsistentPassword);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(inconsistentPassword);
                 driver.FindElement(By.Id("register")).Click();
 
-                var actualErrorMsg = driver.FindElement(By.Id("passwordConfirmErrorMsg")).Text;
+                var actualErrorMsg = driver.FindElement(By.Id("registerPasswordConfirmErrorMsg")).Text;
                 var expectedErrorMsg = "The password and confirmation password do not match.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
@@ -209,21 +209,21 @@ namespace UITesting
             {
                 string tooShortPassword = "1234";
 
-                driver.FindElement(By.Id("email")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("mobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("firstName")).SendKeys(testVector.FirstName);
-                driver.FindElement(By.Id("lastName")).SendKeys(testVector.LastName);
+                driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Mobile);
+                driver.FindElement(By.Id("registerFirstName")).SendKeys(testVector.FirstName);
+                driver.FindElement(By.Id("registerLastName")).SendKeys(testVector.LastName);
 
                 //Invalid password
-                driver.FindElement(By.Id("password")).SendKeys(tooShortPassword);
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(tooShortPassword);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(tooShortPassword);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(tooShortPassword);
                 driver.FindElement(By.Id("register")).Click();
 
-                var actualErrorMsg = driver.FindElement(By.Id("passwordErrorMsg")).Text;
+                var actualErrorMsg = driver.FindElement(By.Id("registerPasswordErrorMsg")).Text;
                 var expectedErrorMsg = "The Password must be at least 6 and at max 100 characters long.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("errorMsg")).Text;
+                actualErrorMsg = driver.FindElement(By.Id("registerErrorMsg")).Text;
                 expectedErrorMsg = "The Password must be at least 6 and at max 100 characters long.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
@@ -241,17 +241,17 @@ namespace UITesting
             {
                 string wrongFormatPassword = "123456";
 
-                driver.FindElement(By.Id("email")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("mobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("firstName")).SendKeys(testVector.FirstName);
-                driver.FindElement(By.Id("lastName")).SendKeys(testVector.LastName);
+                driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Mobile);
+                driver.FindElement(By.Id("registerFirstName")).SendKeys(testVector.FirstName);
+                driver.FindElement(By.Id("registerLastName")).SendKeys(testVector.LastName);
 
                 //Invalid password
-                driver.FindElement(By.Id("password")).SendKeys(wrongFormatPassword);
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(wrongFormatPassword);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(wrongFormatPassword);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(wrongFormatPassword);
                 driver.FindElement(By.Id("register")).Click();
 
-                var actualErrorMsg = driver.FindElement(By.Id("errorMsg")).Text;
+                var actualErrorMsg = driver.FindElement(By.Id("registerErrorMsg")).Text;
                 var expectedErrorMsg = "Passwords must have at least one non alphanumeric character.\r\nPasswords must have at least one lowercase ('a'-'z').\r\nPasswords must have at least one uppercase ('A'-'Z').";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
@@ -270,16 +270,16 @@ namespace UITesting
                 //Insert user with email test@e.com into DB
                 RemoteSetupDatabase("TestSampleDataSetup.sql");
 
-                driver.FindElement(By.Id("email")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("mobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("firstName")).SendKeys(testVector.FirstName);
-                driver.FindElement(By.Id("lastName")).SendKeys(testVector.LastName);
-                driver.FindElement(By.Id("password")).SendKeys(testVector.Password);
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(testVector.PasswordConfirm);
+                driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Mobile);
+                driver.FindElement(By.Id("registerFirstName")).SendKeys(testVector.FirstName);
+                driver.FindElement(By.Id("registerLastName")).SendKeys(testVector.LastName);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(testVector.Password);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(testVector.PasswordConfirm);
                 driver.FindElement(By.Id("register")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("errorMsg")).Text;
+                var actualErrorMsg = driver.FindElement(By.Id("registerErrorMsg")).Text;
                 var expectedErrorMsg = "User name 'test@e.com' is already taken.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
@@ -301,12 +301,12 @@ namespace UITesting
         {
             try
             {
-                driver.FindElement(By.Id("email")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("mobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("firstName")).SendKeys(testVector.FirstName);
-                driver.FindElement(By.Id("lastName")).SendKeys(testVector.LastName);
-                driver.FindElement(By.Id("password")).SendKeys(testVector.Password);
-                driver.FindElement(By.Id("passwordConfirm")).SendKeys(testVector.PasswordConfirm);
+                driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
+                driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Mobile);
+                driver.FindElement(By.Id("registerFirstName")).SendKeys(testVector.FirstName);
+                driver.FindElement(By.Id("registerLastName")).SendKeys(testVector.LastName);
+                driver.FindElement(By.Id("registerPassword")).SendKeys(testVector.Password);
+                driver.FindElement(By.Id("registerPasswordConfirm")).SendKeys(testVector.PasswordConfirm);
                 driver.FindElement(By.Id("register")).Click();
                 Thread.Sleep(500);
 

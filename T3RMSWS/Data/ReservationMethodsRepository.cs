@@ -263,13 +263,13 @@ namespace T3RMSWS.Data
                     await _context.Sittings.FirstOrDefaultAsync(s => s.SittingType.Equals(reservation.SittingType));
 
                 //Create dictionary and initialize the time slot based on the start time and end time of each reservation
-                var dict = new Dictionary<TimeSpan, List<int>> { { sitting.StartTime.TimeOfDay, new List<int>() }, { sitting.EndTime.TimeOfDay, new List<int>() } };
+                var dict = new Dictionary<TimeSpan, List<int?>> { { sitting.StartTime.TimeOfDay, new List<int?>() }, { sitting.EndTime.TimeOfDay, new List<int?>() } };
                 foreach (var r in currentReservations)
                 {
                     if (!dict.ContainsKey(r.StartDateTime.TimeOfDay))
-                        dict[r.StartDateTime.TimeOfDay] = new List<int>();
+                        dict[r.StartDateTime.TimeOfDay] = new List<int?>();
                     if (!dict.ContainsKey(r.EndDateTime.TimeOfDay))
-                        dict[r.EndDateTime.TimeOfDay] = new List<int> { r.NumberOfGuest };
+                        dict[r.EndDateTime.TimeOfDay] = new List<int?> { r.NumberOfGuest };
                     else
                         dict[r.EndDateTime.TimeOfDay].Add(r.NumberOfGuest);
                 }
@@ -593,19 +593,19 @@ namespace T3RMSWS.Data
 
                 //Create dictionary and initialize the time slot based on the start time and end time of each reservation. 
                 //Should consider the overlapped reservations as well.
-                var dict = new Dictionary<TimeSpan, List<int>>
+                var dict = new Dictionary<TimeSpan, List<int?>>
                 {
-                    {reservation.StartDateTime.TimeOfDay, new List<int>()},
-                    {reservation.EndDateTime.TimeOfDay, new List<int>()}
+                    {reservation.StartDateTime.TimeOfDay, new List<int?>()},
+                    {reservation.EndDateTime.TimeOfDay, new List<int?>()}
                 };
                 foreach (var r in reservations)
                 {
                     if (!dict.ContainsKey(r.StartDateTime.TimeOfDay))
-                        dict[r.StartDateTime.TimeOfDay] = new List<int>();
+                        dict[r.StartDateTime.TimeOfDay] = new List<int?>();
                     if (r.EndDateTime.TimeOfDay > reservation.EndDateTime.TimeOfDay)
                         continue;
                     if (!dict.ContainsKey(r.EndDateTime.TimeOfDay))
-                        dict[r.EndDateTime.TimeOfDay] = new List<int> { r.NumberOfGuest };
+                        dict[r.EndDateTime.TimeOfDay] = new List<int?> { r.NumberOfGuest };
                     else
                         dict[r.EndDateTime.TimeOfDay].Add(r.NumberOfGuest);
                 }

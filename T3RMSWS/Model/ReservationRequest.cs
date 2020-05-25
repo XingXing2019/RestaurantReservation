@@ -20,18 +20,18 @@ namespace T3RMSWS.Data
         public string GuestName { get; set; }
 
         
-        [Required(ErrorMessage = "Please select number of guests")]
+        [Required(ErrorMessage = "Please select number of guests.")]
         [Display(Name = "Number of Guests")]
-        [Range(1.0, 15.0, ErrorMessage = "Please enter between 1 and 15")]
-        public int NumberOfGuest { get; set; }
+        [Range(1.0, 15.0, ErrorMessage = "Please enter between 1 and 15.")]
+        public int? NumberOfGuest { get; set; }
 
 
-        [Required(ErrorMessage = "Please select start date and time")]
+        [Required(ErrorMessage = "Please select start date and time.")]
         [Display(Name = "Start")]
         public DateTime StartDateTime { get; set; }
 
 
-        [Required(ErrorMessage = "Please enter duration")]
+        [Required(ErrorMessage = "Please enter duration.")]
         [Display(Name = "Duration")]
         public DurationLength Duration { get; set; }
 

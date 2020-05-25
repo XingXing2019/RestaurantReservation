@@ -16,44 +16,44 @@
         <h4>BOOK A TABLE</h4>
         <p class="text-danger">@ViewBag.AvailableTimeMsg</p>
         <form asp-action="Create">
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div id="walkInErrorMsg" asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <input id="walkInEmail" asp-for="Email" class="form-control" />
+                <span id="walkInEmailErrorMsg" asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Mobile" class="control-label"></label>
-                <input asp-for="Mobile" class="form-control" />
-                <span asp-validation-for="Mobile" class="text-danger"></span>
+                <input id="walkInMobile" asp-for="Mobile" class="form-control" />
+                <span id="walkInMobileErrorMsg" asp-validation-for="Mobile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GuestName" class="control-label"></label>
-                <input asp-for="GuestName" class="form-control" />
-                <span asp-validation-for="GuestName" class="text-danger"></span>
+                <input id="walkInGuestName" asp-for="GuestName" class="form-control" />
+                <span id="walkInGuestNameErrorMsg" asp-validation-for="GuestName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDateTime" class="control-label"></label>
-                <input class="calendar-7 form-control input" name="startDateTime" />
-                <span asp-validation-for="StartDateTime" class="text-danger"></span>
+                <input id="walkInStartDate" class="calendar-7 form-control input" name="startDateTime" />
+                <span id="walkInStartDateErrorMsg" asp-validation-for="StartDateTime" class="text-danger"></span>
             </div>
             <label asp-for="Duration" class="control-label"></label>
-            <select asp-for="Duration" class="form-control selector" asp-items="Html.GetEnumSelectList<DurationLength>()">
+            <select id="walkInDuration" asp-for="Duration" class="form-control selector" asp-items="Html.GetEnumSelectList<DurationLength>()">
                 <option value="">Please select duration</option>
             </select>
-            <span asp-validation-for="Duration" class="text-danger"></span>
+            <span id="walkInDurationErrorMsg" asp-validation-for="Duration" class="text-danger"></span>
             <div class="form-group">
                 <label asp-for="NumberOfGuest" class="control-label"></label>
-                <input asp-for="NumberOfGuest" class="form-control" />
-                <span asp-validation-for="NumberOfGuest" class="text-danger"></span>
+                <input id="walkInNumberOfGuest" asp-for="NumberOfGuest" class="form-control" />
+                <span id="walkInNumberOfGuestErrorMsg" asp-validation-for="NumberOfGuest" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Requirement" class="control-label"></label>
-                <textarea asp-for="Requirement" class="form-control rounded"></textarea>
-                <span asp-validation-for="Requirement" class="text-danger"></span>
+                <textarea id="walkInRequirement" asp-for="Requirement" class="form-control rounded"></textarea>
+                <span id="walkInRequirementErrorMsg" asp-validation-for="Requirement" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="CONFIRM" class="btn btn-primary" />
+                <input id="confirm" type="submit" value="CONFIRM" class="btn btn-primary" />
             </div>
         </form>
         <div>
