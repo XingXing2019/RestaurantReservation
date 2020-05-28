@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using NLog;
@@ -13,17 +12,15 @@ using T3RMSWS.ViewModel;
 
 namespace T3RMSWS.Data
 {
-    public class ReservationMethodsRepository : Controller
+    public class ReservationService
     {
-        private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ReservationMethodsRepository(UserManager<IdentityUser> userManager, ApplicationDbContext context)
+        public ReservationService(ApplicationDbContext context)
         {
             try
             {
-                _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
                 _context = context ?? throw new ArgumentNullException(nameof(context));
             }
             catch (Exception ex)
@@ -80,9 +77,9 @@ namespace T3RMSWS.Data
         /// </summary>
         /// <param name="reservation"></param>
         /// <returns></returns>
-        public async Task<bool> CreateReservation(ReservationRequest reservation)
+        public async Task<bool> CreateReservation(ReservationRequest reservation, IdentityUser user)
         {
-            return await CreateReservationInDataBase(reservation);
+            return await CreateReservationInDataBase(reservation, user);
         }
 
         /// <summary>
@@ -113,9 +110,9 @@ namespace T3RMSWS.Data
         /// </summary>
         /// <param name="reservation"></param>
         /// <returns></returns>
-        public async Task<bool> EditReservation(ReservationRequest reservation)
+        public async Task<bool> EditReservation(ReservationRequest reservation, IdentityUser user)
         {
-            return await EditReservationInDataBase(reservation);
+            return await EditReservationInDataBase(reservation, user);
         }
 
         /// <summary>
@@ -135,6 +132,13 @@ namespace T3RMSWS.Data
                 _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<IdentityUser> GetUser(string personId)
+        {
+            if (personId != null)
+                return await _context.Users.FindAsync(personId);
+            return null;
         }
 
         /// <summary>
@@ -179,16 +183,13 @@ namespace T3RMSWS.Data
         /// Get reservations only belong to this login member.
         /// </summary>
         /// <returns></returns>
-        public async Task<ReservationIndexViewModel> GetReservationsForMember()
+        public async Task<ReservationIndexViewModel> GetReservationsForMember(string userId)
         {
             try
             {
-                //Find person based on his login email.
-                var person = await GetIdentityUserAsync();
-
                 //Get reservations only belong to this person and order these reservations by their start date.
                 var reservations = await _context.ReservationRequests
-                    .Where(r => r.PersonId.Equals(person.Id))
+                    .Where(r => r.PersonId.Equals(userId))
                     .OrderBy(r => r.StartDateTime)
                     .ToListAsync();
 
@@ -347,26 +348,7 @@ namespace T3RMSWS.Data
                 throw new Exception(ex.Message);
             }
         }
-
-
-        /// <summary>
-        /// Get user based on their login email address.
-        /// </summary>
-        /// <returns></returns>
-        private async Task<IdentityUser> GetIdentityUserAsync()
-        {
-            try
-            {
-                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
-                return user;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex.Message);
-                throw new Exception(ex.Message);
-            }
-        }
-
+        
         /// <summary>
         /// Set sitting type for reservation based on its start time.
         /// </summary>
@@ -408,7 +390,7 @@ namespace T3RMSWS.Data
         /// </summary>
         /// <param name="reservation"></param>
         /// <returns></returns>
-        private async Task<bool> EditReservationInDataBase(ReservationRequest reservation)
+        private async Task<bool> EditReservationInDataBase(ReservationRequest reservation, IdentityUser user)
         {
             try
             {
@@ -427,11 +409,11 @@ namespace T3RMSWS.Data
                 var isManager = false;
                 if (reservation.Email == "m@e.com" && reservation.GuestName == "default" && reservation.Mobile == "0400000000")
                 {
-                    var person = await GetIdentityUserAsync();
+                    //var person = await GetIdentityUserAsync();
                     var roles = await _context.Roles.ToListAsync();
                     var userRoles = await _context.UserRoles.ToListAsync();
                     var manager = roles.Find(r => r.Name.ToLower().Equals("manager"));
-                    isManager = userRoles.Find(u => u.UserId.Equals(person.Id)).RoleId == manager.Id;
+                    isManager = userRoles.Find(u => u.UserId.Equals(user.Id)).RoleId == manager.Id;
                 }
 
                 //Keep the current reservation same as old reservation.
@@ -495,7 +477,7 @@ namespace T3RMSWS.Data
         /// </summary>
         /// <param name="reservation"></param>
         /// <returns></returns>
-        private async Task<bool> CreateReservationInDataBase(ReservationRequest reservation)
+        private async Task<bool> CreateReservationInDataBase(ReservationRequest reservation, IdentityUser user)
         {
             try
             {
@@ -511,12 +493,11 @@ namespace T3RMSWS.Data
 
                 if (reservation.Email == "m@e.com" && reservation.GuestName == "default" && reservation.Mobile == "0400000000")
                 {
-                    var person = await GetIdentityUserAsync();
-                    if (person != null)
+                    if (user != null)
                     {
-                        var guest = await _context.People.FindAsync(person.Id);
-                        reservation.PersonId = person.Id;
-                        reservation.Email = person.Email;
+                        var guest = await _context.People.FindAsync(user.Id);
+                        reservation.PersonId = user.Id;
+                        reservation.Email = user.Email;
                         reservation.GuestName = guest.FullName;
                         reservation.Mobile = guest.Mobile;
                     }
@@ -667,133 +648,5 @@ namespace T3RMSWS.Data
                 throw new Exception(ex.Message);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        #region Backup
-
-
-        //private async Task<bool> SaveReservationInDataBase(ReservationRequest reservation, bool onCreate)
-        //{
-        //    try
-        //    {
-        //        var sitting = await SetSittingType(reservation);
-
-        //        //Get all reservations from database, use AsNoTracking method to avoid exception.
-        //        var currentReservation = await _context.ReservationRequests.AsNoTracking().ToListAsync();
-        //        var oldReservation = currentReservation.Find(r => r.Id.Equals(reservation.Id));
-
-        //        //Check if the input reservation can be made using CanMakeReservation method.
-        //        var canMakeReservation = CanMakeReservation(currentReservation, oldReservation, reservation, sitting);
-        //        if (!canMakeReservation)
-        //            return false;
-
-        //        var isManager = false;
-        //        if (reservation.Email == "m@e.com" && reservation.GuestName == "default")
-        //        {
-        //            var person = await GetIdentityUserAsync();
-
-        //            //Check is the current operator the manager or member.
-        //            var roles = await _context.Roles.ToListAsync();
-        //            var userRoles = await _context.UserRoles.ToListAsync();
-        //            var manager = roles.Find(r => r.Name.ToLower().Equals("manager"));
-        //            isManager = userRoles.Find(u => u.UserId.Equals(person.Id)).RoleId == manager.Id;
-
-        //            if (person != null)
-        //            {
-        //                //Keep info of old reservation if the operator is a manager. 
-        //                if (isManager)
-        //                {
-        //                    reservation.GuestName = oldReservation.GuestName;
-        //                    reservation.Email = oldReservation.Email;
-        //                    reservation.PersonId = oldReservation.PersonId;
-        //                }
-
-        //                //Update the info of old reservation if the operator is a member.
-        //                else
-        //                {
-        //                    var guest = await _context.People.FindAsync(person.Id);
-        //                    if (guest != null)
-        //                    {
-        //                        reservation.GuestName = guest.FullName;
-        //                        reservation.Email = guest.Email;
-        //                    }
-        //                    reservation.PersonId = oldReservation == null ? person.Id : oldReservation.PersonId;
-        //                }
-        //            }
-        //        }
-        //        else if (oldReservation != null)
-        //            reservation.PersonId = oldReservation.PersonId;
-
-        //        reservation.ReservationSource = ReservationSource.Online;
-        //        reservation.TimeStamp = DateTime.Now;
-        //        if (onCreate)
-        //            reservation.ReferenceNo = Guid.NewGuid();
-        //        else
-        //            reservation.ReferenceNo = oldReservation.ReferenceNo;
-
-        //        var reservationDate =
-        //            await _context.ReservationDates.FirstOrDefaultAsync(r => r.Date.Date.Equals(reservation.StartDateTime.Date));
-        //        if (reservationDate == null)
-        //        {
-        //            reservationDate = new ReservationDate { Date = reservation.StartDateTime.Date };
-        //            _context.ReservationDates.Add(reservationDate);
-        //        }
-
-        //        //If table is unassigned, create one and save it to database, else update the existing one.
-        //        if (!onCreate)
-        //        {
-        //            var table = await _context.Tables.FirstOrDefaultAsync(t => t.ReservationId.Equals(reservation.Id));
-        //            if (table == null)
-        //            {
-        //                table = new Table
-        //                {
-        //                    TableType = reservation.TableType,
-        //                    ReservationDateId = reservation.Id,
-        //                    ReservationDate = reservationDate,
-        //                    Reservation = reservation
-        //                };
-        //                reservation.Table = table;
-        //                reservation.TableId = table.Id;
-        //                _context.Tables.Add(table);
-        //            }
-        //            else
-        //            {
-        //                //If current operator is manager, he is allowed to change the table type in the table entity.
-        //                //Otherwise, the customer should only follow the table type read from database.
-        //                if (isManager)
-        //                    table.TableType = reservation.TableType;
-        //                else
-        //                    reservation.TableType = table.TableType;
-        //                reservation.Table = table;
-        //                reservation.TableId = table.Id;
-        //            }
-        //        }
-
-        //        reservationDate.Reservations.Add(reservation);
-        //        if (onCreate)
-        //            _context.ReservationRequests.Add(reservation);
-        //        else
-        //            _context.ReservationRequests.Update(reservation);
-        //        await _context.SaveChangesAsync();
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Error(ex.Message);
-        //        throw new Exception(ex.Message);
-        //    }
-        //}
-
-        #endregion
     }
 }

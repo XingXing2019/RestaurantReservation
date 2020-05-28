@@ -11,7 +11,7 @@ namespace UnitTest
 {
     public abstract class TestBase
     {
-        private readonly string connectionString;
+        protected readonly string connectionString;
         private readonly Logger logger;
 
         protected TestBase()

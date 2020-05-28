@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 
 using T3RMSWS.Data;
@@ -10,22 +9,27 @@ using T3RMSWS.Data;
 namespace T3RMSWS.Areas.Member.Controllers
 {
     [Area("Member")]
-    public class Reservation : ReservationMethodsRepository
+    public class Reservation : Controller
     {
-        public Reservation(UserManager<IdentityUser> userManager, ApplicationDbContext context) : base(userManager, context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ReservationService _service;
+        public Reservation(UserManager<IdentityUser> userManager, ReservationService service)
         {
+            _userManager = userManager;
+            _service = service;
         }
-
         public async Task<IActionResult> Index()
         {
-            var reservationIndexViewModel = await GetReservationsForMember();
+            var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+
+            var reservationIndexViewModel = await _service.GetReservationsForMember(user.Id);
             return View(reservationIndexViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            await AddSittings();
+            await _service.AddSittings();
             return View();
         }
 
@@ -34,18 +38,19 @@ namespace T3RMSWS.Areas.Member.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isVaildReservation = await IsValidReservation(reservation);
+                var isVaildReservation = await _service.IsValidReservation(reservation);
                 if (!isVaildReservation)
                 {
                     ViewBag.AvailableTimeMsg = "Sorry, the reservation end time is outside the sitting period";
                     return View(reservation);
                 }
-                var isSuccess = await CreateReservation(reservation);
+                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                var isSuccess = await _service.CreateReservation(reservation, user);
                 if (isSuccess)
                     return RedirectToAction(nameof(Success), reservation);
                 else
                 {
-                    var availableTimeRange = await GetAvailableTimeRange(reservation);
+                    var availableTimeRange = await _service.GetAvailableTimeRange(reservation);
                     if (availableTimeRange == null)
                         ViewBag.AvailableTimeMsg = "Sorry, there is no available time on selected date, please select another date";
                     else
@@ -75,7 +80,7 @@ namespace T3RMSWS.Areas.Member.Controllers
         {
             if (id == null)
                 return NotFound();
-            var reservation = await GetOneReservation(id);
+            var reservation = await _service.GetOneReservation(id);
             if (reservation == null)
                 return NotFound();
             return View(reservation);
@@ -85,7 +90,7 @@ namespace T3RMSWS.Areas.Member.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await DeleteReservation(id);
+            await _service.DeleteReservation(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -94,7 +99,7 @@ namespace T3RMSWS.Areas.Member.Controllers
         {
             if (id == null)
                 return NotFound();
-            var reservation = await GetOneReservation(id);
+            var reservation = await _service.GetOneReservation(id);
             if (reservation == null)
                 return NotFound();
             return View(reservation);
@@ -107,7 +112,7 @@ namespace T3RMSWS.Areas.Member.Controllers
                 return NotFound();
             if (ModelState.IsValid)
             {
-                var isVaildReservation = await IsValidReservation(reservation);
+                var isVaildReservation = await _service.IsValidReservation(reservation);
                 if (!isVaildReservation)
                 {
                     ViewBag.AvailableTimeMsg = "Sorry, the reservation end time is outside the sitting period";
@@ -115,12 +120,13 @@ namespace T3RMSWS.Areas.Member.Controllers
                 }
                 try
                 {
-                    var isSuccess = await EditReservation(reservation);
+                    var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+                    var isSuccess = await _service.EditReservation(reservation, user);
                     if (isSuccess)
                         return RedirectToAction(nameof(Index));
                     else
                     {
-                        var availableTimeRange = await GetAvailableTimeRange(reservation);
+                        var availableTimeRange = await _service.GetAvailableTimeRange(reservation);
                         if (availableTimeRange == null)
                             ViewBag.AvailableTimeMsg = "Sorry, there is no available time on selected date, please select another date";
                         else
@@ -134,7 +140,7 @@ namespace T3RMSWS.Areas.Member.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!IsReservationExist(id))
+                    if (!_service.IsReservationExist(id))
                         return NoContent();
                     else
                         throw;
@@ -148,7 +154,7 @@ namespace T3RMSWS.Areas.Member.Controllers
         {
             if (id == null)
                 return NotFound();
-            var reservation = await GetOneReservation(id);
+            var reservation = await _service.GetOneReservation(id);
             if (reservation == null)
                 return NotFound();
             return View(reservation);

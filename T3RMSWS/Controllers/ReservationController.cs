@@ -1,23 +1,25 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using T3RMSWS.Data;
 
 namespace T3RMSWS.Controllers
 {
-    public class Reservation : ReservationMethodsRepository
+    public class Reservation : Controller
     {
-        public Reservation(UserManager<IdentityUser> userManager, ApplicationDbContext context) : base(userManager, context)
+        private readonly ReservationService _service;
+        public Reservation(ReservationService service)
         {
+            _service = service;
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            await AddSittings();
+            await _service.AddSittings();
             return View();
         }
 
@@ -26,18 +28,19 @@ namespace T3RMSWS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isVaildReservation = await IsValidReservation(reservation);
+                var isVaildReservation = await _service.IsValidReservation(reservation);
                 if (!isVaildReservation)
                 {
                     ViewBag.AvailableTimeMsg = "Sorry, the reservation end time is outside the sitting period";
                     return View(reservation);
                 }
-                var isSuccess = await CreateReservation(reservation);
+                var user = await _service.GetUser(reservation.PersonId);
+                var isSuccess = await _service.CreateReservation(reservation, user);
                 if (isSuccess)
                     return RedirectToAction(nameof(Success), reservation);
                 else
                 {
-                    var availableTimeRange = await GetAvailableTimeRange(reservation);
+                    var availableTimeRange = await _service.GetAvailableTimeRange(reservation);
                     if (availableTimeRange == null)
                         ViewBag.AvailableTimeMsg = "Sorry, there is no available time on selected date, please select another date";
                     else
@@ -56,7 +59,7 @@ namespace T3RMSWS.Controllers
         public async Task<IActionResult> Details(ReservationRequest reservation, int reservationId)
         {
             if (reservation.ReferenceNo == Guid.Empty)
-                reservation = await GetOneReservation(reservation.Id);
+                reservation = await _service.GetOneReservation(reservation.Id);
             return View(reservation);
         }
 
@@ -64,7 +67,7 @@ namespace T3RMSWS.Controllers
         public async Task<IActionResult> Details(ReservationRequest reservation)
         {
             var referenceNo = reservation.ReferenceNo;
-            reservation = await GetReservationForWalkInCustomer(referenceNo);
+            reservation = await _service.GetReservationForWalkInCustomer(referenceNo);
             if (reservation == null)
                 return RedirectToAction(nameof(Create));
             return View(reservation);
@@ -80,7 +83,7 @@ namespace T3RMSWS.Controllers
         {
             if (id == null)
                 return NotFound();
-            var reservation = await GetOneReservation(id);
+            var reservation = await _service.GetOneReservation(id);
             if (reservation == null)
                 return NotFound();
             return View(reservation);
@@ -93,7 +96,7 @@ namespace T3RMSWS.Controllers
                 return NotFound();
             if (ModelState.IsValid)
             {
-                var isVaildReservation = await IsValidReservation(reservation);
+                var isVaildReservation = await _service.IsValidReservation(reservation);
                 if (!isVaildReservation)
                 {
                     ViewBag.AvailableTimeMsg = "Sorry, the reservation end time is outside the sitting period";
@@ -101,12 +104,13 @@ namespace T3RMSWS.Controllers
                 }
                 try
                 {
-                    var isSuccess = await EditReservation(reservation);
+                    var user = await _service.GetUser(reservation.PersonId);
+                    var isSuccess = await _service.EditReservation(reservation, user);
                     if (isSuccess)
                         return RedirectToAction(nameof(Details), reservation);
                     else
                     {
-                        var availableTimeRange = await GetAvailableTimeRange(reservation);
+                        var availableTimeRange = await _service.GetAvailableTimeRange(reservation);
                         if (availableTimeRange == null)
                             ViewBag.AvailableTimeMsg = "Sorry, there is no available time on selected date, please select another date";
                         else
@@ -120,7 +124,7 @@ namespace T3RMSWS.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!IsReservationExist(id))
+                    if (!_service.IsReservationExist(id))
                         return NoContent();
                     else
                         throw;
@@ -134,7 +138,7 @@ namespace T3RMSWS.Controllers
         {
             if (id == null)
                 return NotFound();
-            var reservation = await GetOneReservation(id);
+            var reservation = await _service.GetOneReservation(id);
             if (reservation == null)
                 return NotFound();
             return View(reservation);
@@ -144,8 +148,42 @@ namespace T3RMSWS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await DeleteReservation(id);
+            await _service.DeleteReservation(id);
             return RedirectToAction(nameof(Index), "Home");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ReservationbyEmail(string email)
+        {
+            var reservations = await _service.GetReservationForWalkInCustomer(email);
+            if (reservations.Count == 0)
+                return NotFound();
+            var result = reservations.Select(r =>
+                new
+                {
+                    r.Id,
+                    Reservation = new
+                    {
+                        ReferenceNo = r.ReferenceNo,
+                        StartDateTime = r.StartDateTime,
+                        Duration = r.Duration,
+                        NumberOfGuest = r.NumberOfGuest,
+                        ReservationSource = r.ReservationSource,
+                        Requirement = r.Requirement,
+                    },
+                    Person = new
+                    {
+                        PersonId = r.PersonId,
+                        GuestName = r.GuestName,
+                        Email = r.Email,
+                        Mobile = r.Mobile
+                    },
+                    Sitting = new
+                    {
+                        SittingType = r.SittingType
+                    },
+                });
+            return Ok(result);
         }
     }
 }
