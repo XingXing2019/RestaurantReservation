@@ -11,10 +11,10 @@ namespace UnitTest.UITest
 {
     class WalkInReservationUITest : TestBase
     {
-        private IWebDriver driver;
-        private string registerURL;
-        private Logger logger = LogManager.GetCurrentClassLogger();
-        private TestVector testVector;
+        private IWebDriver _driver;
+        private string _registerURL;
+        private Logger _logger = LogManager.GetCurrentClassLogger();
+        private TestVector _testVector;
 
         [SetUp]
         public void SetUp()
@@ -28,15 +28,15 @@ namespace UnitTest.UITest
             string requirement = "Close to window";
             try
             {
-                testVector = GenerateTestVector(email, mobile, guestName, startDateTime, duration, numberOfGuest, requirement);
-                driver = new ChromeDriver();
-                registerURL = "https://localhost:44309/Reservation/Create";
-                driver.Navigate().GoToUrl(registerURL);
+                _testVector = GenerateTestVector(email, mobile, guestName, startDateTime, duration, numberOfGuest, requirement);
+                _driver = new ChromeDriver();
+                _registerURL = "https://localhost:44309/Reservation/Create";
+                _driver.Navigate().GoToUrl(_registerURL);
                 Thread.Sleep(1000);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -46,11 +46,12 @@ namespace UnitTest.UITest
         {
             try
             {
-                driver.Quit();
+                _driver.Quit();
+                RemoteSetupDatabase("MainSampleDataTearDown.sql");
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -93,29 +94,29 @@ namespace UnitTest.UITest
             {
                 //Invalid email address
                 var invalidEmail = "m@@e.com";
-                driver.FindElement(By.Id("walkInEmail")).SendKeys(invalidEmail);
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys(invalidEmail);
 
-                driver.FindElement(By.Id("walkInMobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys(testVector.GuestName);
-                driver.FindElement(By.Id("walkInStartDate"))
-                    .SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(testVector.NumberOfGuest.ToString());
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys(_testVector.Mobile);
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys(_testVector.GuestName);
+                _driver.FindElement(By.Id("walkInStartDate"))
+                    .SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(_testVector.NumberOfGuest.ToString());
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("walkInEmailErrorMsg")).Text;
+                var actualErrorMsg = _driver.FindElement(By.Id("walkInEmailErrorMsg")).Text;
                 var expectedErrorMsg = "Invalid Email Address";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("walkInErrorMsg")).Text;
+                actualErrorMsg = _driver.FindElement(By.Id("walkInErrorMsg")).Text;
                 expectedErrorMsg = "Invalid Email Address";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -126,29 +127,29 @@ namespace UnitTest.UITest
             try
             {
                 //Empty email address
-                driver.FindElement(By.Id("walkInEmail")).SendKeys("");
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys("");
 
-                driver.FindElement(By.Id("walkInMobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys(testVector.GuestName);
-                driver.FindElement(By.Id("walkInStartDate"))
-                    .SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(testVector.NumberOfGuest.ToString());
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys(_testVector.Mobile);
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys(_testVector.GuestName);
+                _driver.FindElement(By.Id("walkInStartDate"))
+                    .SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(_testVector.NumberOfGuest.ToString());
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("walkInEmailErrorMsg")).Text;
+                var actualErrorMsg = _driver.FindElement(By.Id("walkInEmailErrorMsg")).Text;
                 var expectedErrorMsg = "The Email field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("walkInErrorMsg")).Text;
+                actualErrorMsg = _driver.FindElement(By.Id("walkInErrorMsg")).Text;
                 expectedErrorMsg = "The Email field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -158,30 +159,30 @@ namespace UnitTest.UITest
         {
             try
             {
-                driver.FindElement(By.Id("walkInEmail")).SendKeys(testVector.Email);
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys(_testVector.Email);
 
                 //Empty mobile
-                driver.FindElement(By.Id("walkInMobile")).SendKeys("");
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys(testVector.GuestName);
-                driver.FindElement(By.Id("walkInStartDate"))
-                    .SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(testVector.NumberOfGuest.ToString());
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys("");
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys(_testVector.GuestName);
+                _driver.FindElement(By.Id("walkInStartDate"))
+                    .SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(_testVector.NumberOfGuest.ToString());
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("walkInMobileErrorMsg")).Text;
+                var actualErrorMsg = _driver.FindElement(By.Id("walkInMobileErrorMsg")).Text;
                 var expectedErrorMsg = "The Mobile field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("walkInErrorMsg")).Text;
+                actualErrorMsg = _driver.FindElement(By.Id("walkInErrorMsg")).Text;
                 expectedErrorMsg = "The Mobile field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -191,30 +192,30 @@ namespace UnitTest.UITest
         {
             try
             {
-                driver.FindElement(By.Id("walkInEmail")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("walkInMobile")).SendKeys(testVector.Mobile);
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys(_testVector.Email);
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys(_testVector.Mobile);
 
                 //Empty mobile
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys("");
-                driver.FindElement(By.Id("walkInStartDate"))
-                    .SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(testVector.NumberOfGuest.ToString());
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys("");
+                _driver.FindElement(By.Id("walkInStartDate"))
+                    .SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(_testVector.NumberOfGuest.ToString());
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("walkInGuestNameErrorMsg")).Text;
+                var actualErrorMsg = _driver.FindElement(By.Id("walkInGuestNameErrorMsg")).Text;
                 var expectedErrorMsg = "The Guest Name field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("walkInErrorMsg")).Text;
+                actualErrorMsg = _driver.FindElement(By.Id("walkInErrorMsg")).Text;
                 expectedErrorMsg = "The Guest Name field is required.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -224,30 +225,30 @@ namespace UnitTest.UITest
         {
             try
             {
-                driver.FindElement(By.Id("walkInEmail")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("walkInMobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys(testVector.GuestName);
-                driver.FindElement(By.Id("walkInStartDate"))
-                    .SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys(_testVector.Email);
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys(_testVector.Mobile);
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys(_testVector.GuestName);
+                _driver.FindElement(By.Id("walkInStartDate"))
+                    .SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
 
                 //Empty number of guest
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys("");
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys("");
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("walkInNumberOfGuestErrorMsg")).Text;
+                var actualErrorMsg = _driver.FindElement(By.Id("walkInNumberOfGuestErrorMsg")).Text;
                 var expectedErrorMsg = "Please select number of guests.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("walkInErrorMsg")).Text;
+                actualErrorMsg = _driver.FindElement(By.Id("walkInErrorMsg")).Text;
                 expectedErrorMsg = "Please select number of guests.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -257,30 +258,30 @@ namespace UnitTest.UITest
         {
             try
             {
-                driver.FindElement(By.Id("walkInEmail")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("walkInMobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys(testVector.GuestName);
-                driver.FindElement(By.Id("walkInStartDate"))
-                    .SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys(_testVector.Email);
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys(_testVector.Mobile);
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys(_testVector.GuestName);
+                _driver.FindElement(By.Id("walkInStartDate"))
+                    .SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
 
                 //Low number of guest
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys("0");
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys("0");
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("walkInNumberOfGuestErrorMsg")).Text;
+                var actualErrorMsg = _driver.FindElement(By.Id("walkInNumberOfGuestErrorMsg")).Text;
                 var expectedErrorMsg = "Please enter between 1 and 15.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("walkInErrorMsg")).Text;
+                actualErrorMsg = _driver.FindElement(By.Id("walkInErrorMsg")).Text;
                 expectedErrorMsg = "Please enter between 1 and 15.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -290,30 +291,30 @@ namespace UnitTest.UITest
         {
             try
             {
-                driver.FindElement(By.Id("walkInEmail")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("walkInMobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys(testVector.GuestName);
-                driver.FindElement(By.Id("walkInStartDate"))
-                    .SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys(_testVector.Email);
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys(_testVector.Mobile);
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys(_testVector.GuestName);
+                _driver.FindElement(By.Id("walkInStartDate"))
+                    .SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
 
                 //Low number of guest
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys("16");
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys("16");
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
-                var actualErrorMsg = driver.FindElement(By.Id("walkInNumberOfGuestErrorMsg")).Text;
+                var actualErrorMsg = _driver.FindElement(By.Id("walkInNumberOfGuestErrorMsg")).Text;
                 var expectedErrorMsg = "Please enter between 1 and 15.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
 
-                actualErrorMsg = driver.FindElement(By.Id("walkInErrorMsg")).Text;
+                actualErrorMsg = _driver.FindElement(By.Id("walkInErrorMsg")).Text;
                 expectedErrorMsg = "Please enter between 1 and 15.";
                 Assert.AreEqual(expectedErrorMsg, actualErrorMsg);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -323,14 +324,14 @@ namespace UnitTest.UITest
         {
             try
             {
-                driver.FindElement(By.Id("walkInEmail")).SendKeys(testVector.Email);
-                driver.FindElement(By.Id("walkInMobile")).SendKeys(testVector.Mobile);
-                driver.FindElement(By.Id("walkInGuestName")).SendKeys(testVector.GuestName);
-                driver.FindElement(By.Id("walkInStartDate")).SendKeys(testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
-                new SelectElement(driver.FindElement(By.Id("walkInDuration"))).SelectByText(testVector.Duration);
-                driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(testVector.NumberOfGuest.ToString());
-                driver.FindElement(By.Id("walkInRequirement")).SendKeys(testVector.Requirement);
-                driver.FindElement(By.Id("confirm")).Click();
+                _driver.FindElement(By.Id("walkInEmail")).SendKeys(_testVector.Email);
+                _driver.FindElement(By.Id("walkInMobile")).SendKeys(_testVector.Mobile);
+                _driver.FindElement(By.Id("walkInGuestName")).SendKeys(_testVector.GuestName);
+                _driver.FindElement(By.Id("walkInStartDate")).SendKeys(_testVector.StartDateTime.ToString("yyyy-MM-dd HH:mm"));
+                new SelectElement(_driver.FindElement(By.Id("walkInDuration"))).SelectByText(_testVector.Duration);
+                _driver.FindElement(By.Id("walkInNumberOfGuest")).SendKeys(_testVector.NumberOfGuest.ToString());
+                _driver.FindElement(By.Id("walkInRequirement")).SendKeys(_testVector.Requirement);
+                _driver.FindElement(By.Id("confirm")).Click();
                 Thread.Sleep(500);
 
                 //Check record in database
@@ -338,25 +339,18 @@ namespace UnitTest.UITest
                 var result = RemoteQueryDatabase(selectQuery);
 
                 Assert.AreEqual(1, result.Rows.Count);
-                Assert.AreEqual(testVector.NumberOfGuest, (int)result.Rows[0].ItemArray[1]);
-                Assert.AreEqual(testVector.StartDateTime, (DateTime)result.Rows[0].ItemArray[2]);
-                Assert.AreEqual(testVector.Requirement, result.Rows[0].ItemArray[3].ToString());
-                Assert.AreEqual(testVector.GuestName, result.Rows[0].ItemArray[5].ToString());
+                Assert.AreEqual(_testVector.NumberOfGuest, (int)result.Rows[0].ItemArray[1]);
+                Assert.AreEqual(_testVector.StartDateTime, (DateTime)result.Rows[0].ItemArray[2]);
+                Assert.AreEqual(_testVector.Requirement, result.Rows[0].ItemArray[3].ToString());
+                Assert.AreEqual(_testVector.GuestName, result.Rows[0].ItemArray[5].ToString());
                 Assert.AreEqual(DurationLength.OneHour, (DurationLength)(int)result.Rows[0].ItemArray[9]);
-                Assert.AreEqual(testVector.Email, result.Rows[0].ItemArray[11].ToString());
-                Assert.AreEqual(testVector.Mobile, result.Rows[0].ItemArray[16].ToString());
+                Assert.AreEqual(_testVector.Email, result.Rows[0].ItemArray[11].ToString());
+                Assert.AreEqual(_testVector.Mobile, result.Rows[0].ItemArray[16].ToString());
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                _logger.Error(ex.Message);
                 throw new Exception(ex.Message);
-            }
-            finally
-            {
-                //Remove test data from database
-                var deleteQuery = @"delete from ReservationRequests; 
-                                    delete from ReservationDates;";
-                RemoteQueryDatabase(deleteQuery);
             }
         }
     }

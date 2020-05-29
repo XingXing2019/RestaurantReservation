@@ -77,8 +77,9 @@ namespace T3RMSWS.Data
         /// </summary>
         /// <param name="reservation"></param>
         /// <returns></returns>
-        public async Task<bool> CreateReservation(ReservationRequest reservation, IdentityUser user)
+        public async Task<bool> CreateReservation(ReservationRequest reservation, string userId)
         {
+            var user = await _context.Users.FindAsync(userId);
             return await CreateReservationInDataBase(reservation, user);
         }
 
@@ -112,8 +113,10 @@ namespace T3RMSWS.Data
         /// </summary>
         /// <param name="reservation"></param>
         /// <returns></returns>
-        public async Task<bool> EditReservation(ReservationRequest reservation, IdentityUser user)
+        public async Task<bool> EditReservation(ReservationRequest reservation, string userId)
         {
+
+            var user = await _context.Users.FindAsync(userId);
             return await EditReservationInDataBase(reservation, user);
         }
 
@@ -435,7 +438,6 @@ namespace T3RMSWS.Data
                 var isManager = false;
                 if (reservation.Email == "m@e.com" && reservation.GuestName == "default" && reservation.Mobile == "0400000000")
                 {
-                    //var person = await GetIdentityUserAsync();
                     var roles = await _context.Roles.ToListAsync();
                     var userRoles = await _context.UserRoles.ToListAsync();
                     var manager = roles.Find(r => r.Name.ToLower().Equals("manager"));

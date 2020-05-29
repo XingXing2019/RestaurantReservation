@@ -35,7 +35,8 @@ namespace T3RMSWS.Controllers
                     return View(reservation);
                 }
                 var user = await _service.GetUser(reservation.PersonId);
-                var isSuccess = await _service.CreateReservation(reservation, user);
+                var userId = user?.Id;
+                var isSuccess = await _service.CreateReservation(reservation, userId);
                 if (isSuccess)
                     return RedirectToAction(nameof(Success), reservation);
                 else
@@ -105,7 +106,8 @@ namespace T3RMSWS.Controllers
                 try
                 {
                     var user = await _service.GetUser(reservation.PersonId);
-                    var isSuccess = await _service.EditReservation(reservation, user);
+                    var userId = user?.Id;
+                    var isSuccess = await _service.EditReservation(reservation, userId);
                     if (isSuccess)
                         return RedirectToAction(nameof(Details), reservation);
                     else

@@ -45,7 +45,8 @@ namespace T3RMSWS.Areas.Member.Controllers
                     return View(reservation);
                 }
                 var user = await _userManager.FindByEmailAsync(User.Identity.Name);
-                var isSuccess = await _service.CreateReservation(reservation, user);
+                var userId = user?.Id;
+                var isSuccess = await _service.CreateReservation(reservation, userId);
                 if (isSuccess)
                     return RedirectToAction(nameof(Success), reservation);
                 else
@@ -121,7 +122,8 @@ namespace T3RMSWS.Areas.Member.Controllers
                 try
                 {
                     var user = await _userManager.FindByEmailAsync(User.Identity.Name);
-                    var isSuccess = await _service.EditReservation(reservation, user);
+                    var userId = user?.Id;
+                    var isSuccess = await _service.EditReservation(reservation, userId);
                     if (isSuccess)
                         return RedirectToAction(nameof(Index));
                     else
