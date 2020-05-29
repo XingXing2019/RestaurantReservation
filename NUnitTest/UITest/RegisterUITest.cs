@@ -21,7 +21,7 @@ namespace UITesting
         [SetUp]
         public void SetUp()
         {
-            string email = "test@e.com";
+            string email = "test1@e.com";
             string mobile = "0425123214";
             string firstName = "Timothy";
             string lastName = "Xing";
@@ -267,7 +267,7 @@ namespace UITesting
             try
             {
                 //Insert user with email test@e.com into DB
-                RemoteSetupDatabase("TestSampleDataSetup.sql");
+                RemoteSetupDatabase("TestSampleDataSetup_User.sql");
 
                 driver.FindElement(By.Id("registerEmail")).SendKeys(testVector.Email);
                 driver.FindElement(By.Id("registerMobile")).SendKeys(testVector.Mobile);

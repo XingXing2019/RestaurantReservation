@@ -1,4 +1,0 @@
-﻿INSERT [dbo].[People] ([Id], [RestaurantId], [Email], [Firstname], [LastName], [Mobile]) VALUES 
-(N'376068bc-7cf1-44f1-8e4f-fd503b3c3a87', 5, N'test@e.com', N'Timothy', N'Xing', N'0425123214');
-INSERT [dbo].[AspNetUsers] ([Id], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES 
-(N'376068bc-7cf1-44f1-8e4f-fd503b3c3a87', N'test@e.com', N'TEST@E.COM', N'test@e.com', N'TEST@E.COM', 0, N'AQAAAAEAACcQAAAAEAe/igTe6+EILPUuhrhHYV9ec4F3bOkn0l5HoA7G9T5r+WRSC3rz8SN0+Fyzl6TXLg==', N'REYTS7HKIUHSCZCP4AHWVKR2SVXVQJHG', N'2ebf4960-c86d-4349-a953-62be25b99881', NULL, 0, 0, NULL, 1, 0)

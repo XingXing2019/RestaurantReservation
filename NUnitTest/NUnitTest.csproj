@@ -10,14 +10,16 @@
     <None Remove="QueryFile\MainSampleDataSetup.sql" />
     <None Remove="QueryFile\MainSampleDataTearDown.sql" />
     <None Remove="QueryFile\SetupTestDB.sql" />
-    <None Remove="QueryFile\TestSampleDataSetup.sql" />
+    <None Remove="QueryFile\TestSampleDataSetup_Reservation.sql" />
+    <None Remove="QueryFile\TestSampleDataSetup_User.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="QueryFile\MainSampleDataSetup.sql" />
     <Content Include="QueryFile\MainSampleDataTearDown.sql" />
     <Content Include="QueryFile\SetupTestDB.sql" />
-    <Content Include="QueryFile\TestSampleDataSetup.sql" />
+    <Content Include="QueryFile\TestSampleDataSetup_Reservation.sql" />
+    <Content Include="QueryFile\TestSampleDataSetup_User.sql" />
   </ItemGroup>
 
   <ItemGroup>

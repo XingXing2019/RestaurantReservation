@@ -92,6 +92,8 @@ namespace T3RMSWS.Data
             try
             {
                 var reservation = await _context.ReservationRequests.FindAsync(id);
+                if(reservation == null)
+                    return;
                 _context.ReservationRequests.Remove(reservation);
                 var table = await _context.Tables.FirstOrDefaultAsync(t => t.ReservationId.Equals(reservation.Id));
                 if (table != null)
@@ -348,7 +350,31 @@ namespace T3RMSWS.Data
                 throw new Exception(ex.Message);
             }
         }
-        
+
+        /// <summary>
+        /// Check if the input reservation is valid.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
+        public async Task<bool> IsValidReservation(ReservationRequest reservation)
+        {
+            try
+            {
+                var sitting = await SetSittingType(reservation);
+                if (reservation.EndDateTime.TimeOfDay > sitting.EndTime.TimeOfDay)
+                    return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+
+
         /// <summary>
         /// Set sitting type for reservation based on its start time.
         /// </summary>
@@ -517,27 +543,6 @@ namespace T3RMSWS.Data
                 _context.ReservationRequests.Add(reservation);
 
                 await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex.Message);
-                throw new Exception(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Check if the input reservation is valid.
-        /// </summary>
-        /// <param name="reservation"></param>
-        /// <returns></returns>
-        public async Task<bool> IsValidReservation(ReservationRequest reservation)
-        {
-            try
-            {
-                var sitting = await SetSittingType(reservation);
-                if (reservation.EndDateTime.TimeOfDay > sitting.EndTime.TimeOfDay)
-                    return false;
                 return true;
             }
             catch (Exception ex)
