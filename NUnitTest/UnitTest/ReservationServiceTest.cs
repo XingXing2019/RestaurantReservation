@@ -79,8 +79,8 @@ namespace UnitTest.UnitTest
                 //Check details of the records
                 Assert.AreEqual("1/01/2020 7:00:00 AM", result.Rows[0].ItemArray[1].ToString());
                 Assert.AreEqual("1/01/2020 11:00:00 AM", result.Rows[0].ItemArray[2].ToString());
-                Assert.AreEqual(15, (int) result.Rows[0].ItemArray[3]);
-                Assert.AreEqual(0, (int) result.Rows[0].ItemArray[4]);
+                Assert.AreEqual(15, (int)result.Rows[0].ItemArray[3]);
+                Assert.AreEqual(0, (int)result.Rows[0].ItemArray[4]);
 
                 Assert.AreEqual("1/01/2020 11:00:00 AM", result.Rows[1].ItemArray[1].ToString());
                 Assert.AreEqual("1/01/2020 4:00:00 PM", result.Rows[1].ItemArray[2].ToString());
@@ -138,7 +138,7 @@ namespace UnitTest.UnitTest
                 throw new Exception(ex.Message);
             }
         }
-        
+
         [Test]
         public async Task CreateReservationTest_Member_Success()
         {
@@ -190,7 +190,7 @@ namespace UnitTest.UnitTest
                 var selectQuery = $"select * from ReservationRequests";
                 var result = RemoteQueryDatabase(selectQuery);
 
-                Assert.AreEqual(5, result.Rows.Count);
+                Assert.AreEqual(9, result.Rows.Count);
             }
             catch (Exception ex)
             {
@@ -209,7 +209,7 @@ namespace UnitTest.UnitTest
                 var selectQuery = $"select * from ReservationRequests";
                 var result = RemoteQueryDatabase(selectQuery);
 
-                Assert.AreEqual(4, result.Rows.Count);
+                Assert.AreEqual(8, result.Rows.Count);
             }
             catch (Exception ex)
             {
@@ -256,7 +256,7 @@ namespace UnitTest.UnitTest
                 var reservation = await _service.GetOneReservation(reservationId);
 
                 reservation.Requirement = "Away from window";
-                reservation.StartDateTime = new DateTime(2020, 06, 02, 20, 00, 00);
+                reservation.StartDateTime = new DateTime(2020, 06, 01, 21, 00, 00);
                 reservation.Duration = DurationLength.OneAndHalfHours;
                 reservation.NumberOfGuest = 9;
                 await _service.EditReservation(reservation, userId);
@@ -266,7 +266,7 @@ namespace UnitTest.UnitTest
 
                 Assert.AreEqual(1, result.Rows.Count);
                 Assert.AreEqual(9, (int)result.Rows[0].ItemArray[1]);
-                Assert.AreEqual("2/06/2020 8:00:00 PM", result.Rows[0].ItemArray[2].ToString());
+                Assert.AreEqual("1/06/2020 9:00:00 PM", result.Rows[0].ItemArray[2].ToString());
                 Assert.AreEqual("Away from window", result.Rows[0].ItemArray[3].ToString());
                 Assert.AreEqual("Timothy Xing", result.Rows[0].ItemArray[5].ToString());
                 Assert.AreEqual(3, (int)result.Rows[0].ItemArray[9]);
@@ -308,10 +308,10 @@ namespace UnitTest.UnitTest
                 Assert.AreEqual(5, reservation.NumberOfGuest);
                 Assert.AreEqual("2020-05-31 08:00:00", reservation.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 Assert.AreEqual("Close to Window", reservation.Requirement);
-                Assert.AreEqual(2, (int) reservation.ReservationSource);
+                Assert.AreEqual(2, (int)reservation.ReservationSource);
                 Assert.AreEqual("Timothy Xing", reservation.GuestName);
-                Assert.AreEqual(0, (int) reservation.SittingType);
-                Assert.AreEqual(2, (int) reservation.Duration);
+                Assert.AreEqual(0, (int)reservation.SittingType);
+                Assert.AreEqual(2, (int)reservation.Duration);
                 Assert.AreEqual("test1@e.com", reservation.Email);
                 Assert.AreEqual("62938ec0-8666-4697-aabc-55a4c70f541f", reservation.ReferenceNo.ToString());
                 Assert.AreEqual("0425124578", reservation.Mobile);
@@ -426,12 +426,12 @@ namespace UnitTest.UnitTest
 
                 Assert.AreEqual(2, reservations.Count);
 
-                Assert.AreEqual(42,reservations[0].Id);
-                Assert.AreEqual(6,reservations[0].NumberOfGuest);
+                Assert.AreEqual(42, reservations[0].Id);
+                Assert.AreEqual(6, reservations[0].NumberOfGuest);
                 Assert.AreEqual("2020-06-01 08:00:00", reservations[0].StartDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 Assert.AreEqual("Away from Window", reservations[0].Requirement);
                 Assert.AreEqual("Angela Dai", reservations[0].GuestName);
-                Assert.AreEqual(2,(int) reservations[0].Duration);
+                Assert.AreEqual(2, (int)reservations[0].Duration);
                 Assert.AreEqual("test2@e.com", reservations[0].Email);
                 Assert.AreEqual("58938ec0-8666-4607-aabc-55a4c70f541f", reservations[0].ReferenceNo.ToString());
                 Assert.AreEqual("0425135485", reservations[0].Mobile);
@@ -452,7 +452,7 @@ namespace UnitTest.UnitTest
                 throw new Exception(ex.Message);
             }
         }
-        
+
         [Test]
         public async Task GetReservationsForMember_Success()
         {
@@ -489,15 +489,121 @@ namespace UnitTest.UnitTest
             }
         }
 
+        [Test]
+        public async Task GetReservationsForManager_Success()
+        {
+            try
+            {
+                var results = (await _service.GetReservationsForManager()).ReservationsByDate;
 
+                Assert.AreEqual(4, results.Count);
 
+                var reservations1 = results[new DateTime(2020, 5, 31, 0, 0, 0)];
+                Assert.AreEqual(1, reservations1.Count);
+                Assert.AreEqual("62938ec0-8666-4697-aabc-55a4c70f541f", reservations1[0].ReferenceNo.ToString());
 
-        //GetReservationsForManager
+                var reservations2 = results[new DateTime(2020, 6, 1, 0, 0, 0)];
+                Assert.AreEqual(2, reservations2.Count);
+                Assert.AreEqual("58938ec0-8666-4607-aabc-55a4c70f541f", reservations2[0].ReferenceNo.ToString());
+                Assert.AreEqual("09eda8b2-6cac-46c8-b811-2b6d124a849b", reservations2[1].ReferenceNo.ToString());
 
-        //GetAvailableTimeRange
+                var reservations3 = results[new DateTime(2020, 6, 2, 0, 0, 0)];
+                Assert.AreEqual(2, reservations3.Count);
+                Assert.AreEqual("e8afbdf8-829a-4ef7-a13b-02e86c7625a0", reservations3[0].ReferenceNo.ToString());
+                Assert.AreEqual("c472e156-ff32-46dd-84d3-e8cffdcf112e", reservations3[1].ReferenceNo.ToString());
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
 
-        //IsReservationExist
+        [Test]
+        public async Task GetAvailableTimeRange_HasAvailableTime()
+        {
+            var reservation = new ReservationRequest
+            {
+                Email = email,
+                Mobile = mobile,
+                GuestName = guestName,
+                StartDateTime = new DateTime(2020, 06, 03, 10, 00, 00),
+                SittingType = SittingType.Breakfast,
+                Duration = DurationLength.OneHour,
+                NumberOfGuest = 5,
+                Requirement = requirement
+            };
+            var time = await _service.GetAvailableTimeRange(reservation);
+            Assert.IsNotNull(time);
+            Assert.AreEqual(new TimeSpan(7, 0, 0), time[0]);
+        }
 
-        //IsValidReservation
+        [Test]
+        public async Task GetAvailableTimeRange_NoAvailableTime()
+        {
+            var reservation = new ReservationRequest
+            {
+                Email = email,
+                Mobile = mobile,
+                GuestName = guestName,
+                StartDateTime = new DateTime(2020, 06, 03, 10, 00, 00),
+                SittingType = SittingType.Breakfast,
+                Duration = DurationLength.OneHour,
+                NumberOfGuest = 10,
+                Requirement = requirement
+            };
+            var time = await _service.GetAvailableTimeRange(reservation);
+            Assert.IsNull(time);
+        }
+
+        [Test]
+        public void IsReservationExist_Exist()
+        {
+            var reservationId = 40;
+            var isExist = _service.IsReservationExist(reservationId);
+            Assert.IsTrue(isExist);
+        }
+
+        [Test]
+        public void IsReservationExist_NotExist()
+        {
+            var reservationId = 39;
+            var isExist = _service.IsReservationExist(reservationId);
+            Assert.IsFalse(isExist);
+        }
+
+        [Test]
+        public async Task IsValidReservation_Vaild()
+        {
+            var reservation = new ReservationRequest
+            {
+                Email = email,
+                Mobile = mobile,
+                GuestName = guestName,
+                StartDateTime = new DateTime(2020, 05, 30, 07, 00, 00),
+                Duration = DurationLength.ThreeHour,
+                NumberOfGuest = numberOfGuest,
+                Requirement = requirement
+            };
+            var isValid = await _service.IsValidReservation(reservation);
+            Assert.IsTrue(isValid);
+        }
+
+        [Test]
+        public async Task IsValidReservation_Invaild()
+        {
+            var reservation = new ReservationRequest
+            {
+                Email = email,
+                Mobile = mobile,
+                GuestName = guestName,
+                StartDateTime = new DateTime(2020, 05, 30, 10, 00, 00),
+                Duration = DurationLength.ThreeHour,
+                NumberOfGuest = numberOfGuest,
+                Requirement = requirement
+            };
+            var isValid = await _service.IsValidReservation(reservation);
+            Assert.IsFalse(isValid);
+        }
     }
 }

@@ -139,6 +139,11 @@ namespace T3RMSWS.Data
             }
         }
 
+        /// <summary>
+        /// Get one user by person Id.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
         public async Task<IdentityUser> GetUser(string personId)
         {
             if (personId != null)
@@ -618,6 +623,11 @@ namespace T3RMSWS.Data
             }
         }
 
+        /// <summary>
+        /// Get reservations by user mobile.
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <returns></returns>
         public async Task<ReservationIndexViewModel> GetReservationsForStaff(string mobile)
         {
             try
