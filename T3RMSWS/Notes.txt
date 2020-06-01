@@ -19,16 +19,5 @@ P: Member@123
 U: m4@e.com
 P: Member@123
 
-This is an update
-
-Farrukh String:
-Data Source=DESKTOP-QV2D04T\\SQLEXPRESS;Initial Catalog=T3DB;Integrated Security=True
-
 Xing Xing:
 server=(localdb)\\MSSQLLocalDB;database=T3RMSWS;Trusted_Connection=true
-
-Tetyana Yarish:
- "server=\\TANYA\MSSQLSERVER01;database=T3RMSWS;Trusted_Connection=true"
-
-
- done

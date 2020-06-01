@@ -166,24 +166,20 @@ namespace T3RMSWS.Controllers
                     r.Id,
                     Reservation = new
                     {
-                        ReferenceNo = r.ReferenceNo,
-                        StartDateTime = r.StartDateTime,
-                        Duration = r.Duration,
-                        NumberOfGuest = r.NumberOfGuest,
-                        ReservationSource = r.ReservationSource,
-                        Requirement = r.Requirement,
+                        r.ReferenceNo,
+                        r.StartDateTime,
+                        r.Duration,
+                        r.NumberOfGuest,
+                        r.ReservationSource,
+                        r.Requirement,
                     },
                     Person = new
                     {
-                        PersonId = r.PersonId,
-                        GuestName = r.GuestName,
-                        Email = r.Email,
-                        Mobile = r.Mobile
-                    },
-                    Sitting = new
-                    {
-                        SittingType = r.SittingType
-                    },
+                        r.PersonId,
+                        r.GuestName,
+                        r.Email,
+                        r.Mobile
+                    }
                 });
             return Ok(result);
         }

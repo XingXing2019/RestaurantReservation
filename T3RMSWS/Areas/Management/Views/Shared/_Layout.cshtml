@@ -86,12 +86,15 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/calendar_7days/calendar7.js"></script>
-    <script>
-        jQuery('.calendar-7').Calendar7({
-            allowTimeStart: '07:00',
-            allowTimeEnd: '22:00'
-        });
-    </script>
-    @RenderSection("Scripts", required: false)
+<script>
+    jQuery('.calendar-7').Calendar7({
+        allowTimeStart: '07:00',
+        allowTimeEnd: '22:00'
+    });
+</script>
+
+
+
+@RenderSection("Scripts", required: false)
 </body>
 </html>
