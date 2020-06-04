@@ -446,7 +446,8 @@ namespace T3RMSWS.Data
                     var roles = await _context.Roles.ToListAsync();
                     var userRoles = await _context.UserRoles.ToListAsync();
                     var manager = roles.Find(r => r.Name.ToLower().Equals("manager"));
-                    isManager = userRoles.Find(u => u.UserId.Equals(user.Id)).RoleId == manager.Id;
+                    if (manager != null)
+                        isManager = userRoles.Find(u => u.UserId.Equals(user.Id)).RoleId == manager.Id;
                 }
 
                 //Keep the current reservation same as old reservation.
