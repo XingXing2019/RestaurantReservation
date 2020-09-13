@@ -1,4 +1,5 @@
-﻿SET IDENTITY_INSERT [ReservationRequests] ON;
+﻿DELETE FROM [dbo].[ReservationRequests]
+SET IDENTITY_INSERT [ReservationRequests] ON;
 INSERT [dbo].[ReservationRequests] ([Id], [NumberOfGuest], [StartDateTime], [Requirement], [ReservationSource], [GuestName], [SittingType], [PersonId], [Duration], [Email], [TimeStamp], [ReferenceNo], [TableId], [TableType], [Mobile]) VALUES 
 (40, 5, N'2020-05-31 08:00:00.0000000', N'Close to Window', 2, 'Timothy Xing', 0, N'376068bc-7cf1-44f1-8e4f-fd503b3c3a87', 2, N'test1@e.com',  N'2020-05-31 08:00:00.0000000', N'62938ec0-8666-4697-aabc-55a4c70f541f', 0, 0, N'0425124578'),
 (41, 10, N'2020-06-01 10:00:00.0000000', N'N/A', 2, 'Timothy Xing', 0, N'376068bc-7cf1-44f1-8e4f-fd503b3c3a87', 2, N'test1@e.com',  N'2020-05-29 08:00:00.0000000', N'09eda8b2-6cac-46c8-b811-2b6d124a849b', 0, 0, N'0425124578'),

@@ -1,4 +1,5 @@
-﻿INSERT [dbo].[People] ([Id], [RestaurantId], [Email], [Firstname], [LastName], [Mobile]) VALUES 
+﻿DELETE FROM [dbo].[People];
+INSERT [dbo].[People] ([Id], [RestaurantId], [Email], [Firstname], [LastName], [Mobile]) VALUES 
 (N'376068bc-7cf1-44f1-8e4f-fd503b3c3a87', 5, N'test1@e.com', N'Timothy', N'Xing', N'0425123214'),
 (N'688568bc-7cf1-23e1-6f6h-fd4g3b3b6b57', 5, N'test2@e.com', N'Angela', N'Dai', N'0457843658');
 INSERT [dbo].[AspNetUsers] ([Id], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES 
