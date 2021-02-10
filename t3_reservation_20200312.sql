@@ -1,6 +1,7 @@
 /****** Object:  Database [T3RMSWS]    Script Date: 12/03/2020 10:02:26 AM ******/
 CREATE DATABASE [T3RMSWS]
 GO
+USE [T3RMSWS]
 /****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 12/03/2020 10:02:26 AM ******/
 SET ANSI_NULLS ON
 GO
